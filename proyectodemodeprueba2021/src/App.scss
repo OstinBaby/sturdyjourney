@@ -1,0 +1,117 @@
+@function core($base) {
+  $result: 0.009658113525734344;
+  @for $_ from 1 through $base {
+      $result: $result * 1.1875;
+  }
+  @return $result;
+}
+@function core_font($base: 0) {
+  $result: core(27 + $base);
+
+  @return $result;
+}
+
+@function body_width($base: 1, $width: 100%) {
+  @return $width / $base;
+}
+
+@function core_box($base: 0, $width: 100%) {
+  @return core_font($base) * $width;
+}
+
+@for $i from 1 through 9 {
+  .f#{$i * 100} {
+      font-weight: $i * 100;
+  }
+}
+
+@for $i from 0 through 50 {
+  .corebox_x#{$i}:not(.box) {
+      min-width: 3.6rem * core($i + 23);
+      width: unset;
+  }
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+
+  
+}
+
+.row {
+  display: flex;
+  flex-direction:row;
+}
+
+@for $i from 0 through 50 {
+  // tamano de letas
+  .f_#{$i} {
+    font-size: 1rem * core_font($i);
+    @for $ii from 0 through 50 {
+        &.lh_#{$ii} {
+            line-height: (1rem * core_font($i)) * core($ii + 27);
+        }
+
+        @media (orientation: portrait), (max-width: 1000px) {
+            &.mobilelh_#{$ii} {
+                line-height: (1rem * core_font($i)) * core($ii + 27) !important;
+            }
+        }
+    }
+}
+
+
+
+  //tamano de iconos
+  .iconsize_#{$i} {
+      min-width: 1rem * core_font($i - 27) !important;
+      max-width: 1rem * core_font($i - 27) !important;
+      min-height: 1rem * core_font($i - 27) !important;
+      mask-size: 1rem * core_font($i - 27) !important;
+      background-size: 1rem * core_font($i - 27) !important;
+  }
+
+  .bidcorebox_#{$i} {
+      min-height: 3.6rem * core($i + 17);
+      min-width: 3.6rem * core($i + 17);
+  }
+
+  .smallbidcorebox_#{$i} {
+      min-height: 3.6rem * core($i);
+      max-height: 3.6rem * core($i);
+      min-width: 3.6rem * core($i);
+      max-width: 3.6rem * core($i);
+  }
+  //el temano vertical de las cajas
+  .corebox_#{$i} {
+    min-height: 3.6rem * core($i + 23);
+    width: 100%;
+  }
+   //el temano horizontal de las cajas
+  .corebox_x#{$i} {
+    min-width: 3.6rem * core($i + 23);
+    width: 100%;
+  }
+  .maxedcorebox_#{$i} {
+      min-height: 3.6rem * core($i + 23);
+      max-height: 3.6rem * core($i + 23);
+      width: 100%;
+  }
+
+  .maxedcorebox_x#{$i} {
+      max-width: 3.6rem * core($i + 23);
+      width: 100%;
+  }
+
+  .basis_#{$i} {
+      display: flex;
+      flex-wrap: wrap;
+
+      & > * {
+          flex: 1 1 (1rem * core($i));
+          flex-grow: 1;
+      }
+  }
+
+}
